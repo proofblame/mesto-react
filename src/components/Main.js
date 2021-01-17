@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Card from './Card';
 import api from "../utils/api.js";
-import profilePhoto from "../images/jacques-photo.png";
 import photoEdit from "../images/edit-avatar.svg";
 
 function Main(props) {
-    const [userName, setUserName] = useState("Жак-Ив Кусто");
-    const [userDescription, setUserDescription] = useState(
-        "Исследователь океана"
-    );
-    const [userAvatar, setUserAvatar] = useState(profilePhoto);
+    const [userName, setUserName] = useState();
+    const [userDescription, setUserDescription] = useState();
+    const [userAvatar, setUserAvatar] = useState();
     const [cards, setCards] = useState([]);
 
     // Получение данных пользователя с сервера
@@ -34,11 +31,11 @@ function Main(props) {
             .catch((err) => {
                 console.log(err);
             });
-    });
+    }, []);
 
     //  Запись данных карточки в шаблон
     const cardList = cards.map((card) => (
-        <Card key={card._id} value={card} onCardClick={props.onCardClick}/>
+        <Card key={card._id} card={card} onCardClick={props.onCardClick}/>
     ));
 
     return (

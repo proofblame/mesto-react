@@ -29,7 +29,7 @@ class Api {
         }).then((res) => this._addResult(res));
     }
     // Удалить лайки
-    delLikes(cardId) {
+    deleteLikes(cardId) {
         return fetch(`${this._url}/cards/likes/${cardId}`, {
             method: "DELETE",
             headers: this._headers,

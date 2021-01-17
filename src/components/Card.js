@@ -1,20 +1,20 @@
 function Card(props) {
     function handleClick() {
-        props.onCardClick(props.value);
+        props.onCardClick(props.card);
     }
 
     return (
         <li className="elements__item">
             <figure className="element">
                 <img
-                    src={props.value.link}
-                    alt={props.value.name}
+                    src={props.card.link}
+                    alt={props.card.name}
                     className="element__image"
-                    onClick={() => handleClick(props.value)}
+                    onClick={handleClick}
                 />
                 <div className="element__body">
                     <p className="element__figcaption section__subtitle">
-                        {props.value.name}
+                        {props.card.name}
                     </p>
                     <div className="element__like-group">
                         <button
@@ -22,7 +22,7 @@ function Card(props) {
                             type="button"
                         ></button>
                         <div className="element__like-count">
-                            {props.value.likes.length}
+                            {props.card.likes.length}
                         </div>
                     </div>
                 </div>
