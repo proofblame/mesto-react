@@ -1,6 +1,6 @@
 function ImagePopup(props) {
     return (
-        <section className={`popup section__popup popup_type_popup-gallery ${props.card.isOpen ? 'popup_opened' : ''}`}>
+        <section className={`popup section__popup popup_type_popup-gallery ${props.card ? 'popup_opened' : ''}`}>
             <div className="popup__gallery">
                 <img src={props.card.link} alt={props.card.name} className="popup__image" />
                 <p className="popup__title">{props.card.name}</p>

@@ -4,9 +4,9 @@ import api from "../utils/api.js";
 import photoEdit from "../images/edit-avatar.svg";
 
 function Main(props) {
-    const [userName, setUserName] = useState();
-    const [userDescription, setUserDescription] = useState();
-    const [userAvatar, setUserAvatar] = useState();
+    const [userName, setUserName] = useState('');
+    const [userDescription, setUserDescription] = useState('');
+    const [userAvatar, setUserAvatar] = useState('');
     const [cards, setCards] = useState([]);
 
     // Получение данных пользователя с сервера
@@ -20,7 +20,7 @@ function Main(props) {
             .catch((err) => {
                 console.log(err);
             });
-    });
+    }, []);
 
     // Получение карточек с сервера
     useEffect(() => {

@@ -9,11 +9,10 @@ function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-    const [selectedCard, setSelectedCard] = useState({isOpen: false});
+    const [selectedCard, setSelectedCard] = useState(false);
 
     function handleCardClick(card) {
         setSelectedCard({
-            isOpen: true,
             name: card.name,
             link: card.link
         })
@@ -35,7 +34,7 @@ function App() {
         setIsEditProfilePopupOpen(false);
         setIsAddPlacePopupOpen(false);
         setIsEditAvatarPopupOpen(false);
-        setSelectedCard({isOpen: false})
+        setSelectedCard(false)
     }
 
     return (
