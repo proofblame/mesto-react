@@ -21,20 +21,22 @@ class Api {
             }),
         }).then((res) => this._addResult(res));
     }
-    // Поставить лайки
-    setLikes(cardId) {
-        return fetch(`${this._url}/cards/likes/${cardId}`, {
-            method: "PUT",
-            headers: this._headers,
-        }).then((res) => this._addResult(res));
+
+    // Обновляем статус лайков карточки
+    changeLikeCardStatus(cardId, noIsLiked) {
+        if (noIsLiked) {
+            return fetch(`${this._url}/cards/likes/${cardId}`, {
+                method: "PUT",
+                headers: this._headers,
+            }).then((res) => this._addResult(res));
+        } else {
+            return fetch(`${this._url}/cards/likes/${cardId}`, {
+                method: "DELETE",
+                headers: this._headers,
+            }).then((res) => this._addResult(res));
+        }
     }
-    // Удалить лайки
-    deleteLikes(cardId) {
-        return fetch(`${this._url}/cards/likes/${cardId}`, {
-            method: "DELETE",
-            headers: this._headers,
-        }).then((res) => this._addResult(res));
-    }
+
     // Удаление карточки
     deleteCard(cardId) {
         return fetch(`${this._url}/cards/${cardId}`, {
