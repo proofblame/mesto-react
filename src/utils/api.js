@@ -52,18 +52,18 @@ class Api {
         }).then((res) => this._addResult(res));
     }
     // Редактирование данных пользователя
-    editUserInfo(name, job) {
+    setUserInfo(name, about) {
         return fetch(`${this._url}/users/me`, {
             method: "PATCH",
             headers: this._headers,
             body: JSON.stringify({
                 name: name,
-                about: job,
+                about: about,
             }),
         }).then((res) => this._addResult(res));
     }
     // Редактирование аватара пользователя
-    editUserAvatar(url) {
+    setUserAvatar(url) {
         return fetch(`${this._url}/users/me/avatar`, {
             method: "PATCH",
             headers: this._headers,

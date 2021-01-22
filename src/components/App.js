@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
+import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import PopupWithForm from "./PopupWithForm";
 
 function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -14,15 +16,38 @@ function App() {
     const [selectedCard, setSelectedCard] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
 
-    useEffect(() => {
-        api.getUserInfo()
-            .then((data) => {
-                setCurrentUser(data);
+    function handleUpdateAvatar({ avatar }) {
+        api.setUserAvatar(avatar)
+            .then(() => {
+                setCurrentUser({
+                    ...currentUser,
+                    avatar: avatar,
+                });
+            })
+            .then(() => {
+                setIsEditAvatarPopupOpen(false);
             })
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+    }
+
+    function handleUpdateUser({ name, about }) {
+        api.setUserInfo(name, about)
+            .then(() => {
+                setCurrentUser({
+                    ...currentUser,
+                    name: name,
+                    about: about,
+                });
+            })
+            .then(() => {
+                setIsEditProfilePopupOpen(false);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
     function handleCardClick(card) {
         setSelectedCard({
@@ -50,6 +75,16 @@ function App() {
         setSelectedCard(false);
     }
 
+    useEffect(() => {
+        api.getUserInfo()
+            .then((data) => {
+                setCurrentUser(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="root">
@@ -65,7 +100,6 @@ function App() {
                     name="popup-confirm"
                     title="Вы уверены?"
                     value="Да"
-                    onClose={closeAllPopups}
                 ></PopupWithForm>
                 <PopupWithForm
                     name="popup-add-card"
@@ -99,57 +133,16 @@ function App() {
                     />
                     <span className="error" id="link-error"></span>
                 </PopupWithForm>
-                <PopupWithForm
-                    name="popup-update-avatar"
-                    title="Обновить аватар"
-                    defaultValue="Сохранить"
+                <EditAvatarPopup
                     isOpen={isEditAvatarPopupOpen}
                     onClose={closeAllPopups}
-                >
-                    <input
-                        name="link"
-                        type="url"
-                        defaultValue=""
-                        placeholder="Ссылка на картинку"
-                        className="popup__input popup__input_link"
-                        required
-                        id="link"
-                        autoComplete="off"
-                    />
-                    <span className="error" id="link-error"></span>
-                </PopupWithForm>
-                <PopupWithForm
-                    name="popup-edit-profile"
-                    title="Редактировать профиль"
-                    value="Сохранить"
+                    onUpdateAvatar={handleUpdateAvatar}
+                />
+                <EditProfilePopup
                     isOpen={isEditProfilePopupOpen}
                     onClose={closeAllPopups}
-                >
-                    <input
-                        name="name"
-                        type="text"
-                        defaultValue=""
-                        className="popup__input popup__input_name"
-                        id="user-name"
-                        minLength="2"
-                        maxLength="40"
-                        required
-                        autoComplete="off"
-                    />
-                    <span id="user-name-error" className="error"></span>
-                    <input
-                        name="job"
-                        type="text"
-                        defaultValue=""
-                        className="popup__input popup__input_job"
-                        id="about"
-                        minLength="2"
-                        maxLength="200"
-                        required
-                        autoComplete="off"
-                    />
-                    <span id="about-error" className="error"></span>
-                </PopupWithForm>
+                    onUpdateUser={handleUpdateUser}
+                />
                 <ImagePopup card={selectedCard} onClose={closeAllPopups} />
             </div>
         </CurrentUserContext.Provider>
