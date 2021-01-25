@@ -6,8 +6,6 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     const avatarRef = useRef();
     const currentUser = useContext(CurrentUserContext);
 
-
-
     function handleSubmit(event) {
         event.preventDefault();
 
@@ -24,7 +22,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         <PopupWithForm
             name="popup-update-avatar"
             title="Обновить аватар"
-            defaultValue="Сохранить"
+            value="Сохранить"
             isOpen={isOpen}
             onClose={onClose}
             handleSubmit={handleSubmit}
@@ -32,7 +30,6 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
             <input
                 name="link"
                 type="url"
-                defaultValue=""
                 placeholder="Ссылка на картинку"
                 className="popup__input popup__input_link"
                 required

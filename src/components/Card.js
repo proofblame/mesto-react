@@ -1,42 +1,42 @@
 import React from 'react';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Card(props) {
+function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     const currentUser = React.useContext(CurrentUserContext);
-    const isOwn = props.card.owner._id === currentUser._id;
+    const isOwn = card.owner._id === currentUser._id;
     const cardDeleteButtonClassName = (
         `${isOwn ? 'element__delete-button buttons' : ''}`
     )
         
-    const isLiked = props.card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
     const cardLikeButtonClassName = (
         `element__like-button buttons ${isLiked ? 'element__like-button_active' : ''}`
     )
 
     function handleClick() {
-        props.onCardClick(props.card);
+        onCardClick(card);
     }
 
     function handleLikeClick() {
-        props.onCardLike(props.card)
+        onCardLike(card)
     }
 
     function handleDeleteClick() {
-        props.onCardDelete(props.card)
+        onCardDelete(card)
     }
 
     return (
         <li className="elements__item">
             <figure className="element">
                 <img
-                    src={props.card.link}
-                    alt={props.card.name}
+                    src={card.link}
+                    alt={card.name}
                     className="element__image"
                     onClick={handleClick}
                 />
                 <div className="element__body">
                     <p className="element__figcaption section__subtitle">
-                        {props.card.name}
+                        {card.name}
                     </p>
                     <div className="element__like-group">
                         <button
@@ -45,7 +45,7 @@ function Card(props) {
                             onClick={handleLikeClick}
                         ></button>
                         <div className="element__like-count">
-                            {props.card.likes.length}
+                            {card.likes.length}
                         </div>
                     </div>
                 </div>

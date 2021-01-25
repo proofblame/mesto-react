@@ -1,16 +1,17 @@
 .section__popup {
-    position: fixed;
     display: flex;
+    height: 0;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    left: 0;
-    right: 0;
+    position: fixed;
     top: 0;
-    bottom: 0;
-    z-index: -5;
-
+    left: 0;
+    background-color: rgba(0, 0, 0, .5);
+    width: 100%;
+    z-index: 2;
+    
     opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease-out .3s, visibility .5s ease-out .3s, z-index .5s ease-out .4s;
+    transition-property: opacity, height;
+    transition-duration: 1s, 0s;
+    transition-delay: 0s, 1s;
 }
