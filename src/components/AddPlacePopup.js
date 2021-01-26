@@ -1,62 +1,74 @@
-import { useState } from 'react'
+import { useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+function AddPlacePopup({
+    isOpen,
+    onClose,
+    onAddPlace,
+    valueInput,
+    nameError,
+    descriptionError,
+    handleChangeName,
+    handleChangeDescription,
+    formValid
+}) {
     const [name, setName] = useState();
     const [link, setLink] = useState();
-
-    function handleUseName(event) {
-        setName(event.target.value);
-    }
-
-    function handleUseLink(event) {
-        setLink(event.target.value);
-    }
 
     function handleSubmit(event) {
         event.preventDefault();
         onAddPlace({
             name,
             link,
-        })
+        });
     }
 
     return (
         <PopupWithForm
             name="popup-add-card"
             title="Новое место"
-            value="Сохранить"
+            value={valueInput}
             isOpen={isOpen}
             onClose={onClose}
             handleSubmit={handleSubmit}
+            formValid={formValid}
         >
             <input
                 name="name"
                 type="text"
-                value={name}
+                value={name || ""}
                 placeholder="Название"
-                className="popup__input popup__input_title"
+                className={`popup__input popup__input_title ${nameError ? "popup__input_state_invalid" : ""}`}
                 minLength="2"
                 maxLength="30"
                 required
                 id="name-card"
                 autoComplete="off"
-                onChange={handleUseName}
+                onChange={(event) => {
+                    handleChangeName(event);
+                    setName(event.target.value);
+                }}
             />
-            <span id="name-card-error" className="error"></span>
+            <span id="name-card-error" className="error">
+                {nameError}
+            </span>
             <input
                 name="link"
                 type="url"
-                value={link}
+                value={link || ""}
                 placeholder="Ссылка на картинку"
-                className="popup__input popup__input_link"
+                className={`popup__input popup__input_link ${descriptionError ? "popup__input_state_invalid" : ""}`}
                 required
                 id="link"
                 autoComplete="off"
-                onChange={handleUseLink}
+                onChange={(event) => {
+                    handleChangeDescription(event);
+                    setLink(event.target.value);
+                }}
             />
-            <span className="error" id="link-error"></span>
-            
+            <span className="error" id="link-error">
+                {descriptionError}
+            </span>
         </PopupWithForm>
     );
 }

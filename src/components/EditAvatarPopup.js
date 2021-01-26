@@ -2,7 +2,15 @@ import { useEffect, useContext, useRef } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import PopupWithForm from "./PopupWithForm";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({
+    isOpen,
+    onClose,
+    onUpdateAvatar,
+    valueInput,
+    descriptionError,
+    handleChangeDescription,
+    formValid
+}) {
     const avatarRef = useRef();
     const currentUser = useContext(CurrentUserContext);
 
@@ -22,22 +30,26 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         <PopupWithForm
             name="popup-update-avatar"
             title="Обновить аватар"
-            value="Сохранить"
+            value={valueInput}
             isOpen={isOpen}
             onClose={onClose}
             handleSubmit={handleSubmit}
+            formValid={formValid}
         >
             <input
                 name="link"
                 type="url"
                 placeholder="Ссылка на картинку"
-                className="popup__input popup__input_link"
+                className={`popup__input popup__input_link ${descriptionError ? "popup__input_state_invalid" : ""}`}
                 required
                 id="link"
                 autoComplete="off"
                 ref={avatarRef}
+                onChange={(event) => {
+                    handleChangeDescription(event);
+                }}
             />
-            <span className="error" id="link-error"></span>
+            <span className="error" id="link-error">{descriptionError}</span>
         </PopupWithForm>
     );
 }

@@ -6,6 +6,7 @@
 @import url("./__like-button/_active/element__like-button_active.css");
 @import url("./__like-group/__like-group.css");
 @import url("./__like-count/__like-count.css");
+@import url("./__delete-button/_hidden/element__delete-button_hidden.css");
 
 .element {
     margin: 0;
