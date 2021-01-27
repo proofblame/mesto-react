@@ -10,10 +10,8 @@ function AddPlacePopup({
     descriptionError,
     handleChangeName,
     handleChangeDescription,
-    formValid,
+    formValid
 }) {
-
-    console.log(formValid)
     const [name, setName] = useState();
     const [link, setLink] = useState();
 
@@ -39,6 +37,8 @@ function AddPlacePopup({
             onClose={onClose}
             handleSubmit={handleSubmit}
             formValid={formValid}
+            nameError={nameError}
+            descriptionError={descriptionError}
         >
             <input
                 name="name"

@@ -6,9 +6,8 @@ function PopupWithForm({
     onClose,
     handleSubmit,
     children,
-    formValid
+    formValid,
 }) {
-
     return (
         <section
             className={`popup section__popup popup_type_${name} ${
@@ -30,7 +29,9 @@ function PopupWithForm({
                         name="save-button"
                         type="submit"
                         value={value}
-                        className={`popup__save-button ${!formValid ? 'popup__save-button_invalid' : ''}`}
+                        className={`popup__save-button ${
+                            !formValid ? "popup__save-button_invalid" : ""
+                        }`}
                         disabled={!formValid}
                     />
                     <button

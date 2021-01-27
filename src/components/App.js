@@ -24,34 +24,52 @@ function App() {
         confirm: "Да",
     });
 
-    const [nameError, setNameError] = useState('');
-    const [descriptionError, setDescriptionError] = useState('');
+    const [nameError, setNameError] = useState("");
+    const [descriptionError, setDescriptionError] = useState("");
     const [formValid, setFormValid] = useState(false);
+    const [nameValid, setNameValid] = useState(false);
+    const [descriptionValid, setDescriptionValid] = useState(false);
 
     // Валидация изменения имени и названия
     function handleChangeName(event) {
         if (event.target.validity.valid) {
-            setNameError('');
+            setNameError("");
+            setNameValid(true);
         } else {
             setNameError(event.target.validationMessage);
+            setNameValid(false);
         }
     }
     // Валидация изменения описания и ссылок
     function handleChangeDescription(event) {
         if (event.target.validity.valid) {
-            setDescriptionError('');
+            setDescriptionError("");
+            setDescriptionValid(true);
         } else {
             setDescriptionError(event.target.validationMessage);
+            setDescriptionValid(false);
         }
     }
 
     useEffect(() => {
-        if (nameError || descriptionError) {
+        if (!nameValid || !descriptionValid) {
             setFormValid(false);
         } else {
             setFormValid(true);
         }
-    },[nameError, descriptionError]);
+        return () => {
+            setFormValid(false);
+        };
+    }, [nameValid, descriptionValid]);
+
+
+    // useEffect(() => {
+    //     if (nameError || descriptionError) {
+    //         setFormValid(false);
+    //     } else {
+    //         setFormValid(true);
+    //     }
+    // },[nameError, descriptionError]);
 
     // Получение данных пользователя с сервера
     useEffect(() => {
@@ -120,7 +138,7 @@ function App() {
     function handleCardDelete(card) {
         setValueInput({
             ...valueInput,
-            confirm: "Сохранение...",
+            confirm: "Удаление...",
         });
         api.deleteCard(card._id)
             .then(() => {
@@ -128,10 +146,10 @@ function App() {
                 setCards(newCards);
             })
             .then(() => {
-                setIsConfirmPopupOpen(false);
+                closeAllPopups();
                 setValueInput({
                     ...valueInput,
-                    confirm: "Сохранить",
+                    confirm: "Да",
                 });
             })
             .catch((err) => {
@@ -154,7 +172,7 @@ function App() {
                     ...valueInput,
                     submit: "Сохранить",
                 });
-                setIsAddPlacePopupOpen(false);
+                closeAllPopups();
             })
             .catch((err) => {
                 console.log(err);
@@ -174,7 +192,7 @@ function App() {
                 });
             })
             .then(() => {
-                setIsEditAvatarPopupOpen(false);
+                closeAllPopups();
                 setValueInput({
                     ...valueInput,
                     submit: "Сохранить",
@@ -199,7 +217,7 @@ function App() {
                 });
             })
             .then(() => {
-                setIsEditProfilePopupOpen(false);
+                closeAllPopups();
                 setValueInput({
                     ...valueInput,
                     submit: "Сохранить",
@@ -225,12 +243,15 @@ function App() {
     //  Открыть попап редактирования аватара
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
+        setNameValid(true)
     }
     //  Открыть попап подтверждения удаления карточки
     function handleDeleteButtonClick(card) {
         setIsConfirmPopupOpen(true);
         setDeleteCard(card);
-        setFormValid(true);
+        setNameValid(true)
+        setDescriptionValid(true)
+
     }
     //  Закрыть все попапы
     function closeAllPopups() {
@@ -239,6 +260,8 @@ function App() {
         setIsEditAvatarPopupOpen(false);
         setSelectedCard(false);
         setIsConfirmPopupOpen(false);
+        setNameValid(false)
+        setDescriptionValid(false)
     }
 
     return (
@@ -254,6 +277,7 @@ function App() {
                         cards={cards}
                         onCardLike={handleCardLike}
                         onConfirmDelete={handleDeleteButtonClick}
+                        handleChangeName={handleChangeName}
                     />
                 )}
                 <Footer />

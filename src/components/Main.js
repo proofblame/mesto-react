@@ -11,6 +11,7 @@ function Main({
     cards,
     onCardLike,
     onConfirmDelete,
+    handleChangeName
 }) {
     const currentUser = React.useContext(CurrentUserContext);
 
