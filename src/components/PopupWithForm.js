@@ -8,6 +8,7 @@ function PopupWithForm({
     children,
     formValid
 }) {
+
     return (
         <section
             className={`popup section__popup popup_type_${name} ${

@@ -17,20 +17,18 @@ function EditProfilePopup({
     const [description, setDescription] = useState("");
     const currentUser = useContext(CurrentUserContext);
 
-    useEffect(() => {
-        setName(currentUser.name);
-        setDescription(currentUser.about);
-    }, [currentUser]);
+    useEffect(() => { 
+        setName(currentUser.name); 
+        setDescription(currentUser.about); 
+    }, [isOpen, currentUser]);
 
     function handleSubmit(event) {
         event.preventDefault();
-
-        onUpdateUser({
-            name,
-            about: description,
-        });
+            onUpdateUser({
+                name,
+                about: description,
+            });
     }
-
     return (
         <PopupWithForm
             name="popup-edit-profile"

@@ -24,22 +24,22 @@ function App() {
         confirm: "Да",
     });
 
-    const [nameError, setNameError] = useState("");
-    const [descriptionError, setDescriptionError] = useState("");
+    const [nameError, setNameError] = useState('');
+    const [descriptionError, setDescriptionError] = useState('');
     const [formValid, setFormValid] = useState(false);
 
     // Валидация изменения имени и названия
     function handleChangeName(event) {
-        if (event.target.checkValidity()) {
-            setNameError("");
+        if (event.target.validity.valid) {
+            setNameError('');
         } else {
             setNameError(event.target.validationMessage);
         }
     }
     // Валидация изменения описания и ссылок
     function handleChangeDescription(event) {
-        if (event.target.checkValidity()) {
-            setDescriptionError("");
+        if (event.target.validity.valid) {
+            setDescriptionError('');
         } else {
             setDescriptionError(event.target.validationMessage);
         }
@@ -51,13 +51,7 @@ function App() {
         } else {
             setFormValid(true);
         }
-    }, [
-        isEditProfilePopupOpen,
-        isAddPlacePopupOpen,
-        isEditAvatarPopupOpen,
-        nameError,
-        descriptionError,
-    ]);
+    },[nameError, descriptionError]);
 
     // Получение данных пользователя с сервера
     useEffect(() => {
@@ -110,12 +104,16 @@ function App() {
     function handleCardLike(card) {
         const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-        api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-            const newCards = cards.map((c) =>
-                c._id === card._id ? newCard : c
-            );
-            setCards(newCards);
-        });
+        api.changeLikeCardStatus(card._id, !isLiked)
+            .then((newCard) => {
+                const newCards = cards.map((c) =>
+                    c._id === card._id ? newCard : c
+                );
+                setCards(newCards);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     //  Удалить карточку
@@ -232,6 +230,7 @@ function App() {
     function handleDeleteButtonClick(card) {
         setIsConfirmPopupOpen(true);
         setDeleteCard(card);
+        setFormValid(true);
     }
     //  Закрыть все попапы
     function closeAllPopups() {
@@ -246,15 +245,17 @@ function App() {
         <CurrentUserContext.Provider value={currentUser}>
             <div className="root">
                 <Header />
-                <Main
-                    onEditProfile={handleEditProfileClick}
-                    onAddPlace={handleAddPlaceClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    onCardClick={handleCardClick}
-                    cards={cards}
-                    onCardLike={handleCardLike}
-                    onConfirmDelete={handleDeleteButtonClick}
-                />
+                {currentUser && (
+                    <Main
+                        onEditProfile={handleEditProfileClick}
+                        onAddPlace={handleAddPlaceClick}
+                        onEditAvatar={handleEditAvatarClick}
+                        onCardClick={handleCardClick}
+                        cards={cards}
+                        onCardLike={handleCardLike}
+                        onConfirmDelete={handleDeleteButtonClick}
+                    />
+                )}
                 <Footer />
                 <ConfirmPopup
                     isOpen={isConfirmPopupOpen}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup({
@@ -10,8 +10,10 @@ function AddPlacePopup({
     descriptionError,
     handleChangeName,
     handleChangeDescription,
-    formValid
+    formValid,
 }) {
+
+    console.log(formValid)
     const [name, setName] = useState();
     const [link, setLink] = useState();
 
@@ -22,6 +24,11 @@ function AddPlacePopup({
             link,
         });
     }
+
+    useEffect(() => {
+        setName("");
+        setLink("");
+    }, [isOpen]);
 
     return (
         <PopupWithForm
@@ -38,7 +45,8 @@ function AddPlacePopup({
                 type="text"
                 value={name || ""}
                 placeholder="Название"
-                className={`popup__input popup__input_title ${nameError ? "popup__input_state_invalid" : ""}`}
+                className={`popup__input popup__input_title ${nameError ? "popup__input_state_invalid" : ""
+                }`}
                 minLength="2"
                 maxLength="30"
                 required
@@ -57,7 +65,8 @@ function AddPlacePopup({
                 type="url"
                 value={link || ""}
                 placeholder="Ссылка на картинку"
-                className={`popup__input popup__input_link ${descriptionError ? "popup__input_state_invalid" : ""}`}
+                className={`popup__input popup__input_link ${descriptionError ? "popup__input_state_invalid" : ""
+                }`}
                 required
                 id="link"
                 autoComplete="off"
